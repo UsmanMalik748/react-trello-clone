@@ -2,31 +2,49 @@ import React from 'react';
 import TrelloCard from './TrelloCard';
 import TrelloActionButton from './TrelloActionButton';
 import {Droppable} from 'react-beautiful-dnd'
-const TrelloList = ({ title,cards,listID }) => {
+const TrelloList = ({ title,cards,listID,index,listing,handleCardToUpdate }) => {
+
 	return(
-		<Droppable droppableId={String(listID)}>
-			{provided =>(
-				<div {...provided.droppableProps} ref={provided.innerRef} style={styles.container}>
-					<h3 style={styles.titles}>{title}</h3>
-						{cards.map((card,index) => (<TrelloCard key={card.id} text={card.text} id={card.id} index={index}/>))}
-					<TrelloActionButton listID={listID} />
-					{provided.placeholder}
+		
+		<Droppable droppableId={String(listID)} index={index} key={listID}>
+		{provided =>(
+		<div style={styles.containers} index={index}>
+		<h3 style={styles.titles}>{title}</h3>
+			
+				<div {...provided.droppableProps} ref={provided.innerRef} style={styles.container} index={index} style={styles.cardslist}>
+						{cards.map((card,index) => (
+							<TrelloCard key={card.card_id} text={card.text} id={card.card_id} index={index}/>
+							))}
+					
 				</div>
+					<TrelloActionButton listID={listID} listing={listing} handleCardToUpdate={handleCardToUpdate}/>
+					{provided.placeholder}
+		</div>
 					)}
 		</Droppable>
+		
 		);
 }
 
 const styles = {
-	container:{
+	containers:{
 		backgroundColor:'#ebecf0',
 		width :'300px',
+		minWidth:'300px',
 		borderRadius: 3,
 		marginRight:'8px',
-		height: 'fit-content'
+		height: 'fit-content',
+    	maxHeight: '-webkit-fill-available',
+    	overflowY: 'auto',
+		
 	},
 	titles:{
 		padding:'0px 0 0 16px'
+	},
+	cardslist:{
+		maxHeight: '60vh',		
+    	overflowY: 'auto',
+    	
 	}
 }
 export default TrelloList;

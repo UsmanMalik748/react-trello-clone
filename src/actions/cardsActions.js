@@ -1,4 +1,4 @@
-import {CONSTANTS} from '../action';
+import {CONSTANTS} from '../actions';
 
 export const addCard = (listID,text) => {
 	return {

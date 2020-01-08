@@ -1,4 +1,5 @@
-import {CONSTANTS} from '../action';
+import {CONSTANTS} from '../actions';
+
 
 export const addList = title => {
 	return {
@@ -11,7 +12,7 @@ export const sort=(
 	droppableIdEnd,
 	droppableIndexStart,
 	droppableIndexEnd,
-	deaggableId
+	draggableId
 )=>{
 	return {
 		type: CONSTANTS.DRAG_HAPPENED,
@@ -20,7 +21,7 @@ export const sort=(
 			droppableIdEnd,
 			droppableIndexStart,
 			droppableIndexEnd,
-			deaggableId
+			draggableId
 		}
 	}
 }

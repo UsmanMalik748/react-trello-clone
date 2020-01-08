@@ -4,8 +4,9 @@ import Textarea from 'react-autosize-textarea';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { addList,addCard } from '../action'
-
+import { addList,addCard,createBoard } from '../actions';
+import axios from 'axios';
+let baseUrl = "http://localhost:8000/api/";
 class TrelloActionButton extends Component{
 	
 	state = {
@@ -31,33 +32,86 @@ class TrelloActionButton extends Component{
 	}
 
 	handleAddList = () =>{
-		const {dispatch} = this.props;
+		const {dispatch,handleToUpdate} = this.props;
 		const {text} = this.state;
 
 		if(text){
-			dispatch(addList(text));
+
+			const data = {
+				title:text,
+				user_id:1,
+				board_id:1
+			}
+			axios.post(baseUrl+'addNewTitle',  data)
+				      .then(res => {
+				    		console.log(res.data);
+				    		handleToUpdate(res.data["data"]);
+				      }).catch(error=>{
+				      	console.log("erorrs"+error);
+				      });
+				      
+			//dispatch(addList(text));
 		}
 
 		return;
 	}
 
 	handleAddCard = () => {
-		const {dispatch,listID} = this.props;
+		const {dispatch,listID,listing,handleCardToUpdate} = this.props;
 		const {text} = this.state;
 
 		if(text){
-			dispatch(addCard(listID,text));
+			const data = {
+				description:text,
+				user_id:1,
+				title_id:listID
+			}
+
+			
+			axios.post(baseUrl+'addNewCard',  data)
+				      .then(res => {
+				    		//console.log(res.data["cards"]);
+				    		handleCardToUpdate(res.data["cards"]);
+				      }).catch(error=>{
+				      	console.log("erorrs"+error);
+				      });
+			
+
+			//dispatch(addCard(listID,text));
 		}
 
 		return;	
 	}
 
+	handleCreateBoard = () =>{
+		const {dispatch,handleToUpdate} = this.props;
+		const {text} = this.state;
+console.log("here"+text);
+		if(text){
+			const data = {
+				project_name:text,
+				user_id:1
+			}
+			{/*axios.post(baseUrl+'addNewBoard',  data)
+				      .then(res => {
+				    		console.log("board res"+res);
+				      }).catch(error=>{
+				      	console.log("erorrs"+error);
+				      });*/}
+				      
+				      handleToUpdate();
+
+		}
+
+		return;
+	}
+
 	renderAddButton = () => {
 		const {list} = this.props;
-		const buttonText = list ? "Add another list" : "Add another card";
-		const buttonTextColor = list ? "white" : "inherit";
-		const buttonBackground = list ? "hsla(0,0%,100%,.24)" : "inherit";
-		const buttonTextOpacity = list ? 1 : 0.5;
+		const buttonText = (list === "list") ? "Add another list" : (list === "board") ? "Create new board" : "Add another card";
+		const buttonTextColor = (list === "list") ? "white" : (list === "board") ? "inherit"  : "inherit";
+		const buttonBackground = (list === "list") ? "hsla(0,0%,100%,.24)" : (list === "board") ? "inherit" : "inherit";
+		const buttonTextOpacity = (list === "list" || list === "board") ? 1 : 0.5;
 		
 		return (
 				<div
@@ -68,7 +122,8 @@ class TrelloActionButton extends Component{
 					color:buttonTextColor,
 					backgroundColor:buttonBackground,
 					height:"fit-content",
-					maxWidth: "264px"
+					maxWidth: "264px",
+					minWidth: "264px"
 				}}>
 					<Icon 
 						style={{
@@ -86,8 +141,8 @@ class TrelloActionButton extends Component{
 
 	renderForm = () => {
 		const {list} = this.props ;
-		const cardPlaceHolder = list ? "Enter a title for this card… " : "Enter list title..." ;
-		const cardButtonTitle = list ? "Add title" : "Add card" ;
+		const cardPlaceHolder = (list === "list") ? "Enter a title for this card… " : (list === "board") ? "Create new board"  : "Enter list title..." ;
+		const cardButtonTitle = (list === "list") ? "Add title" : (list === "board") ? "Create board" : "Add card" ;
 		
 		return <div style={{
 			    		width: '282px',
@@ -118,7 +173,7 @@ class TrelloActionButton extends Component{
 				    </Card>
 				    <div style={styles.formbutton}>
 				    <Button 
-				    	onMouseDown={list ? this.handleAddList : this.handleAddCard} 
+				    	onMouseDown={(list === "list") ? this.handleAddList : (list === "board") ?  this.handleCreateBoard : this.handleAddCard} 
 				    	varient="contained" 
 				    	style={{color:"white",backgroundColor:"#5aac44"}}
 				    >
@@ -132,6 +187,7 @@ class TrelloActionButton extends Component{
 
 
 	render(){
+
 		return this.state.formOpen ? this.renderForm() : this.renderAddButton();
 	}
 
@@ -153,4 +209,4 @@ const styles = {
     }
 }
 
-export default connect()(TrelloActionButton);
+export default TrelloActionButton;

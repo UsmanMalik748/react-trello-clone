@@ -26,6 +26,107 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <style>
+      body{
+            height: 100vh;
+            width: 100vh;
+            background-color: rgb(72, 161, 214);
+            overflow-y: hidden;
+      }
+      ::-webkit-scrollbar {
+  width: 12px;
+  padding: 10px
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(72, 161, 214); 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(2, 106, 167); 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: 72, 161, 214; 
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1040;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  opacity: .5;
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+}
+
+.modal {
+  z-index: 100;
+  background: white;
+  position: relative;
+  margin: 1.75rem auto;
+  border-radius: 3px;
+  max-width: 500px;
+  padding: 1rem 3rem 2rem 2rem;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-close-button {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  opacity: .3;
+  cursor: pointer;
+  border: none;
+}
+
+.modalButton {
+  font-size: .9rem;
+  font-weight: 200;
+  border: none;
+  border-radius: 3px;
+  padding: .3rem .5rem;
+  margin-left: .5rem;
+  background-color: #f3f2f2;
+  margin: 3% 0; 
+  display: flex;
+}
+
+.modaldesc{
+  width: 333px;
+  margin-left: 7%;
+  height: 39px;
+  border-radius: 6px;
+  background: #f3f2f2;
+}
+.button-default {
+  background: #f3f2f2;
+  color: #fff;
+  background-color: #f3f2f2 !important
+}
+    </style>
     <title>React App</title>
   </head>
   <body>
